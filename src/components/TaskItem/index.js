@@ -49,13 +49,7 @@ class TaskItem extends React.Component {
                                     value={this.state.titleEdit}
                                     onChange={this.changeHandler} />
                             </div>
-                            <div className="form-group">
-                                <label >Done ?</label>
-                                <select className="form-control" id="exampleFormControlSelect1">
-                                    <option>True</option>
-                                    <option>False</option>
-                                </select>
-                            </div>
+
                             <button type="button" className="btn btn-outline-primary btn-save" onClick={this.saveHandler}>Save Change</button>
                         </div>
                     </div>
