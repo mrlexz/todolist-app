@@ -73,6 +73,7 @@ class TodoApp extends React.Component {
         this.setState({
             checkAll: !nowCheckAll
         })
+        console.log(this.state.checkAll)
     }
 
     updateHandler = (id, titleEdit) => {
@@ -86,7 +87,31 @@ class TodoApp extends React.Component {
         })
 
     }
-
+    labelCheckHandler = () => {
+        let count = 0;
+        let label = ''
+        for (let dt of this.state.data) {
+            if (dt.done === true) { count++ };
+        }
+        if (count === this.state.data.length) {
+            label += 'Uncheck All'
+            this.state.checkAll = false;
+        } else {
+            label += 'Check All'
+            this.state.checkAll = true;
+        }
+        return label;
+    }
+    deleteCheckedHandler = () => {
+        const newDT = this.state.data;
+        const td = newDT.filter(todo => {
+            return todo.done === false;
+        })
+        this.setState({
+            data: td,
+            checkAll: !this.state.checkAll
+        })
+    }
     render() {
         return (
             <div >
@@ -96,7 +121,8 @@ class TodoApp extends React.Component {
                     <div className="container btn-gr">
                         <div >
                             <button type="button" className="btn btn-outline-secondary " onClick={this.sortHandler}>Sort</button>
-                            <button type="button" className="btn btn-outline-secondary " onClick={this.checkAllHandler}>Check All</button>
+                            <button type="button" className="btn btn-outline-secondary " onClick={this.checkAllHandler}>{this.labelCheckHandler()}</button>
+                            <button type="button" className="btn btn-outline-secondary " onClick={this.deleteCheckedHandler}>Delete Checked</button>
                         </div>
                         <h4>Checked: {this.countDone()}/{this.state.data.length}</h4>
                     </div>
