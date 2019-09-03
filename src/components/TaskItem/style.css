@@ -33,10 +33,21 @@
   border-radius: 10px;
   background: white;
 }
+.popup-inner p {
+  color: red;
+  display: flex;
+}
 .btn-save {
   float: right;
 }
-label {
+.checkbox-gr {
+  display: flex;
+}
+.checkbox-gr input {
+  margin: 7px;
+}
+
+.form-group label {
   float: left;
 }
 .close-btn {

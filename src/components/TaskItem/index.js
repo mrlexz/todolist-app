@@ -1,41 +1,75 @@
 import React from 'react';
 import './style.css';
-
+import PopupDelete from '../PopupDelete';
 class TaskItem extends React.Component {
     state = {
         titleEdit: this.props.title,
-        showPopup: false
+        showPopup: false,
+        showPopupDelete: false,
+        errorMessagePop: "",
+        isHiddenErrPop: true
     }
     togglePopup = (event) => {
         event.stopPropagation();
         this.setState({
+            titleEdit: this.props.title,
             showPopup: !this.state.showPopup
         })
     }
-    changeHandler = (event) => {
+    togglePopupDelete = (event) => {
+        event.stopPropagation();
+        this.setState({
+            showPopupDelete: !this.state.showPopupDelete
+        })
+        console.log('xxxxxxxxxx')
+    }
 
+    changeHandler = (event) => {
         this.setState({
             titleEdit: event.target.value
         })
     }
-    saveHandler = (event) => {
-        this.props.update(this.props.id, this.state.titleEdit)
-        this.togglePopup(event);
+    saveEditHandler = (event) => {
+        if (this.props.inputValidate(this.state.titleEdit)) {
+            this.props.update(this.props.id, this.state.titleEdit)
+            this.togglePopup(event);
+        } else {
+            this.setState({
+
+            })
+        }
     }
     checkDoneDMM = (event) => {
         event.stopPropagation();
         this.props.checkDone(this.props.id)
+        console.log(this.props.done)
     }
+    deleteTask = (event) => {
+        this.props.delete(event, this.props.id);
+        this.togglePopupDelete(event);
+        console.log('xxxx');
+    }
+
     render() {
         return (
             <div>
-                <div className="container view" onClick={this.checkDoneDMM}>
-                    <p className={`${this.props.done ? "done" : ""}`}>
-                        {this.props.stt}. {this.props.title}
-                    </p>
+                <div className="container view" >
+                    <div className="checkbox-gr">
+                        <input type="checkbox" className="" id={this.props.stt} checked={this.props.done} onChange={this.checkDoneDMM} />
+                        <label className={`${this.props.done ? "done" : ""}`}
+                            htmlFor={this.props.stt}
+
+                        >
+                            {this.props.stt}. {this.props.title}
+                        </label>
+                    </div>
                     <div className="btn-gr">
                         <button type="button" className="btn btn-outline-primary " onClick={this.togglePopup}><i className="fas fa-edit"></i></button>
-                        <button type="button" className="btn btn-outline-danger " onClick={this.props.delete}><i className="fas fa-trash"></i></button>
+                        <button type="button" className="btn btn-outline-danger " data-toggle="modal"
+                            data-target={`#a${this.props.id}`}><i className="fas fa-trash"></i></button>
+                        <PopupDelete id={this.props.id}
+                            delete={this.deleteTask}
+                        />
                     </div>
                 </div>
                 {this.state.showPopup ?
@@ -49,8 +83,8 @@ class TaskItem extends React.Component {
                                     value={this.state.titleEdit}
                                     onChange={this.changeHandler} />
                             </div>
-
-                            <button type="button" className="btn btn-outline-primary btn-save" onClick={this.saveHandler}>Save Change</button>
+                            {!this.props.isHidden ? <p>{this.props.errMess}</p> : null}
+                            <button type="button" className="btn btn-outline-primary btn-save" onClick={this.saveEditHandler}>Save Change</button>
                         </div>
                     </div>
                     : null}

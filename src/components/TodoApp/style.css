@@ -2,3 +2,9 @@
   display: flex;
   justify-content: space-between;
 }
+.error-message {
+  display: flex;
+  margin-left: 20px;
+  color: red;
+  font-weight: bolder;
+}
