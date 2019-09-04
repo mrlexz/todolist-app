@@ -10,9 +10,11 @@ class TodoApp extends React.Component {
         data: [
 
         ],
+        dataSearch: [],
         checkAll: true,
         isHidden: true,
-        errorMessage: ''
+        errorMessage: '',
+        searchValue: ''
     }
     addItemHandler = (inputItem) => {
         if (this.inputValidationHandler(inputItem)) {
@@ -40,7 +42,9 @@ class TodoApp extends React.Component {
         this.setState({
             data: newDT,
             isHidden: true,
-            errorMessage: ''
+            errorMessage: '',
+            dataSearch: [],
+            searchValue: ''
         })
     }
     checkDoneHandler = (id) => {
@@ -152,7 +156,6 @@ class TodoApp extends React.Component {
     }
     inputValidationInPopupHandler = (input) => {
         if (input.trim() === "") {
-
             this.setState({
                 isHidden: false,
                 errorMessage: '*Input not null'
@@ -177,61 +180,108 @@ class TodoApp extends React.Component {
         })
         return true;
     }
+    searchItemHander = (inputValue) => {
+        let currentData = [];
+        let newList = [];
+        newList = this.state.data.filter((dt) => {
+            return dt.title === inputValue
+        })
+        this.setState({
+            dataSearch: newList
+        })
+    }
+    changeSearchValue = (event) => {
+        this.setState({
+            searchValue: event.target.value
+        })
+    }
+    searchHandler = (event) => {
+        event.preventDefault();
+        this.searchItemHander(this.state.searchValue);
+    }
     render() {
         return (
-            <div className="container" >
-                <h1>Todo List make by Me</h1>
-                <TaskInput addItem={this.addItemHandler} inputValidate={this.inputValidationHandler} />
-                {/* {!this.state.isHidden ? <p className="error-message">{this.state.errorMessage}</p> : null} */}
-                {this.state.data.length > 0 ?
-                    <div className="container btn-gr">
-                        <div >
-                            <button type="button" className="btn btn-outline-secondary " onClick={this.sortHandler}>Sort</button>
-                            <button type="button" className="btn btn-outline-secondary " onClick={this.checkAllHandler}>{this.labelCheckHandler()}</button>
-                            <button type="button" className="btn btn-outline-secondary " data-toggle="modal" data-target="#adeleteAll">Delete Checked</button>
-                        </div>
-                        <h4>Checked: {this.countDone()}/{this.state.data.length}</h4>
-                    </div>
-                    : null}
-                <TaskView>
+            <div className="container-fluid main-full">
+                <div className="col-sm-9" >
+                    <h1>Todo List make by Me</h1>
+                    <TaskInput addItem={this.addItemHandler} inputValidate={this.inputValidationHandler}
+                        search={this.searchItemHander}
+                    />
+                    {/* {!this.state.isHidden ? <p className="error-message">{this.state.errorMessage}</p> : null} */}
                     {this.state.data.length > 0 ?
-                        this.state.data.map((item, index) => {
-                            return <TaskItem
-                                stt={index + 1}
-                                title={item.title}
-                                id={item.id}
-                                done={item.done}
-                                key={item.id}
-                                delete={this.deleteHandler}
-                                checkDone={this.checkDoneHandler}
-                                update={this.updateHandler}
-                                inputValidate={this.inputValidationInPopupHandler}
-                                isHidden={this.state.isHidden}
-                                errMess={this.state.errorMessage}
-                            >
-                            </TaskItem>
-                        }) : <NoTask />}
-                </TaskView>
-                {this.countDone() !== 0 ?
-                    <div className="modal fade" id="adeleteAll" tabIndex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                        <div className="modal-dialog" role="document">
-                            <div className="modal-content">
-                                <div className="modal-header">
-                                    <h5 className="modal-title">Delete Task</h5>
-                                    <button type="button" className="close" data-dismiss="modal" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </div>
-                                <div className="modal-body">
-                                    <p>Are you sure you want to delete checked task ? </p>
-                                </div>
-                                <div className="modal-footer">
-                                    <button type="button" className="btn btn-secondary" data-dismiss="modal">No</button>
-                                    <button type="button" className="btn btn-primary" data-dismiss="modal" onClick={this.deleteCheckedHandler}>Yes</button>
+                        <div className="container btn-gr">
+                            <div >
+                                <button type="button" className="btn btn-outline-secondary " onClick={this.sortHandler}>Sort</button>
+                                <button type="button" className="btn btn-outline-secondary " onClick={this.checkAllHandler}>{this.labelCheckHandler()}</button>
+                                <button type="button" className="btn btn-outline-secondary " data-toggle="modal" data-target="#adeleteAll">Delete Checked</button>
+                            </div>
+                            <h4>Checked: {this.countDone()}/{this.state.data.length}</h4>
+                        </div>
+                        : null}
+                    <TaskView>
+                        {this.state.data.length > 0 ?
+                            this.state.data.map((item, index) => {
+                                return <TaskItem
+                                    stt={index + 1}
+                                    title={item.title}
+                                    id={item.id}
+                                    done={item.done}
+                                    key={item.id}
+                                    delete={this.deleteHandler}
+                                    checkDone={this.checkDoneHandler}
+                                    update={this.updateHandler}
+                                    inputValidate={this.inputValidationInPopupHandler}
+                                    isHidden={this.state.isHidden}
+                                    errMess={this.state.errorMessage}
+                                >
+                                </TaskItem>
+                            }) : <NoTask />}
+                    </TaskView>
+                    {this.countDone() !== 0 ?
+                        <div className="modal fade" id="adeleteAll" tabIndex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div className="modal-dialog" role="document">
+                                <div className="modal-content">
+                                    <div className="modal-header">
+                                        <h5 className="modal-title">Delete Task</h5>
+                                        <button type="button" className="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div className="modal-body">
+                                        <p>Are you sure you want to delete checked task ? </p>
+                                    </div>
+                                    <div className="modal-footer">
+                                        <button type="button" className="btn btn-secondary" data-dismiss="modal">No</button>
+                                        <button type="button" className="btn btn-primary" data-dismiss="modal" onClick={this.deleteCheckedHandler}>Yes</button>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    </div> : null}
+                        </div> : null}
+                </div>
+                <div className="col-sm-3 srch-group">
+                    <form className="form-inline my-2 my-lg-0 search-form" onSubmit={this.searchHandler}>
+                        <input className="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" value={this.state.searchValue} onChange={this.changeSearchValue} />
+                    </form>
+                    <TaskView >
+                        {
+                            this.state.dataSearch.map((item, index) => {
+                                return <TaskItem
+                                    stt={index + 1}
+                                    title={item.title}
+                                    id={item.id}
+                                    done={item.done}
+                                    key={item.id}
+                                    delete={this.deleteHandler}
+                                    checkDone={this.checkDoneHandler}
+                                    update={this.updateHandler}
+                                    inputValidate={this.inputValidationInPopupHandler}
+                                    isHidden={this.state.isHidden}
+                                    errMess={this.state.errorMessage}
+                                >
+                                </TaskItem>
+                            })}
+                    </TaskView>
+                </div>
             </div>
         )
     }

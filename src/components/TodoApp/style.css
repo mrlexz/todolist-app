@@ -8,3 +8,10 @@
   color: red;
   font-weight: bolder;
 }
+.main-full {
+  display: flex;
+}
+.srch-group {
+  margin-top: 90px;
+  margin-bottom: 20px;
+}

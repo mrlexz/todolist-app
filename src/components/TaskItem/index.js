@@ -25,18 +25,24 @@ class TaskItem extends React.Component {
     }
 
     changeHandler = (event) => {
+        // if (this.props.inputValidate(event.target.value)) {
+        //     this.setState({
+        //         titleEdit: event.target.value
+        //     })
+        // } else {
         this.setState({
             titleEdit: event.target.value
         })
+        // }
     }
     saveEditHandler = (event) => {
-        if (this.props.inputValidate(this.state.titleEdit)) {
-            this.props.update(this.props.id, this.state.titleEdit)
-            this.togglePopup(event);
+        if (this.state.titleEdit.trim() !== this.props.title) {
+            if (this.props.inputValidate(this.state.titleEdit)) {
+                this.props.update(this.props.id, this.state.titleEdit)
+                this.togglePopup(event);
+            }
         } else {
-            this.setState({
-
-            })
+            this.togglePopup(event);
         }
     }
     checkDoneDMM = (event) => {
