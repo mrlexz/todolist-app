@@ -1,6 +1,5 @@
 import React from 'react';
 import './App.css';
-import TodoApp from './components/TodoApp';
 import Navbar from './components/Navbar';
 import Home from './components/Home';
 import Blog from './components/Blog';

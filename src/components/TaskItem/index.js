@@ -83,12 +83,12 @@ class TaskItem extends React.Component {
                         <div className="popup-inner">
                             <span className="close-btn" onClick={this.togglePopup}><i className="far fa-times-circle"></i></span>
                             <h3>Edit Task</h3>
-                            <div className="form-group">
+                            <form className="form-group" onSubmit={this.saveEditHandler}>
                                 <label >Title</label>
                                 <input type="text" className="form-control"
                                     value={this.state.titleEdit}
                                     onChange={this.changeHandler} />
-                            </div>
+                            </form>
                             {!this.props.isHidden ? <p>{this.props.errMess}</p> : null}
                             <button type="button" className="btn btn-outline-primary btn-save" onClick={this.saveEditHandler}>Save Change</button>
                         </div>

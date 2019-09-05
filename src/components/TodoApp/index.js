@@ -30,8 +30,6 @@ class TodoApp extends React.Component {
         } else {
 
         }
-
-
     }
     deleteHandler = (event, id) => {
         event.stopPropagation();
@@ -181,10 +179,11 @@ class TodoApp extends React.Component {
         return true;
     }
     searchItemHander = (inputValue) => {
-        let currentData = [];
         let newList = [];
         newList = this.state.data.filter((dt) => {
-            return dt.title === inputValue
+            let lc = dt.title.toLowerCase();
+            let fil = inputValue.toLowerCase();
+            return lc.includes(fil);
         })
         this.setState({
             dataSearch: newList

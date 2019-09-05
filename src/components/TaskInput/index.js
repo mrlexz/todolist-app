@@ -56,8 +56,8 @@ class TaskInput extends React.Component {
                         <i className="fas fa-plus"></i>
                     </button>
                 </div>
-                <div class="collapse" id="collapseExample">
-                    <div class="card card-body card-style">
+                <div className="collapse" id="collapseExample">
+                    <div className="card card-body card-style">
                         <form className="container" onSubmit={this.addItemHandler}>
                             <div className="input-group mb-3">
                                 <input type="text" className="form-control" placeholder="Input Here..." value={this.state.title} onChange={this.changeHandler}></input>
